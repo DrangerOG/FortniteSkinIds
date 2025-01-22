@@ -1,2 +1,2 @@
 Fortnite cosmetic ids. lol
-website: [https://drangerog.github.io/fncosmeticids/]
+website: https://drangerog.github.io/fncosmeticids/
