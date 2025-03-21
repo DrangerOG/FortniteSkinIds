@@ -29,6 +29,8 @@
 
     <main>
         <section>
+            <!-- Search Bar -->
+            <input type="text" id="searchBar" placeholder="Search for a backpack..." onkeyup="searchBackpacks()">
             <table>
                 <thead>
                     <tr>
@@ -39,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody id="Backpacks">
-                    
+                    <!-- Content will be dynamically populated here -->
                 </tbody>
             </table>
         </section>
@@ -51,6 +53,26 @@
 
     <script src="https://kit.fontawesome.com/1d1c3ac163.js" crossorigin="anonymous"></script>
     <script src="../js/backpacks.js" type="module"></script>
+
+    <script>
+        // Function to filter backpacks based on the search term
+        function searchBackpacks() {
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const tableRows = document.querySelectorAll('#Backpacks tr');
+            
+            tableRows.forEach(row => {
+                const nameCell = row.querySelector('td:nth-child(2)'); // Name column
+                if (nameCell) {
+                    const nameText = nameCell.textContent.toLowerCase();
+                    if (nameText.includes(searchTerm)) {
+                        row.style.display = ''; // Show row
+                    } else {
+                        row.style.display = 'none'; // Hide row
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
