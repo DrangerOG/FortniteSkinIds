@@ -27,12 +27,12 @@
         </nav>
     </header>
 
-    <!-- Search Bar (No Button Needed) -->
-    <div style="text-align: center; margin: 20px;">
-        <input type="text" id="searchInput" placeholder="Search Skins..." onkeyup="searchTable()">
-    </div>
-
     <main>
+        <!-- Search Bar (Now Works Correctly) -->
+        <div id="search-bar" style="text-align: center; margin: 20px;">
+            <input type="text" id="search-input" placeholder="Search Skins..." onkeyup="searchSkins()">
+        </div>
+
         <!-- Skins Table Section -->
         <section>
             <table>
@@ -58,27 +58,47 @@
     <script src="https://kit.fontawesome.com/1d1c3ac163.js" crossorigin="anonymous"></script>
     <script src="./public/js/skins.js" type="module"></script>
 
-    <!-- Search Script -->
     <script>
-    function searchTable() {
-        let input = document.getElementById("searchInput").value.toLowerCase();
-        let rows = document.querySelectorAll("tbody tr");
+    function searchSkins() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+        const skinsTable = document.getElementById('Skins');
+        const rows = skinsTable.getElementsByTagName('tr');
 
-        for (let row of rows) {
-            let nameCell = row.querySelector("td:nth-child(2)"); // Assumes Name is in the second column
-            if (nameCell) {
-                let name = nameCell.textContent.toLowerCase();
-                if (name.includes(input)) {
-                    row.style.background = "yellow"; // Highlight the found row
-                    row.scrollIntoView({ behavior: "smooth", block: "center" });
-                    break; // Stop at the first match
+        let found = false;
+
+        if (rows.length === 0) {
+            console.warn("No skins loaded yet. Make sure skins.js is populating the table.");
+            return;
+        }
+
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            if (cells.length < 2) continue; // Skip if row doesn't have enough data
+
+            const nameCell = cells[1]; // Name column (index 1)
+            const descriptionCell = cells[2]; // Description column (index 2)
+
+            if (nameCell && descriptionCell) {
+                const nameText = nameCell.textContent.toLowerCase();
+                const descriptionText = descriptionCell.textContent.toLowerCase();
+
+                if (nameText.includes(searchInput) || descriptionText.includes(searchInput)) {
+                    rows[i].style.display = ''; // Show row
+                    rows[i].style.background = 'yellow'; // Highlight match
+                    found = true;
                 } else {
-                    row.style.background = ""; // Reset background if not matched
+                    rows[i].style.display = 'none'; // Hide row
+                    rows[i].style.background = ''; // Remove highlight
                 }
             }
+        }
+
+        if (!found) {
+            alert("No matching skins found.");
         }
     }
     </script>
 
 </body>
+
 </html>
