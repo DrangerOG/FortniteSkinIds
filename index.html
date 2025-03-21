@@ -27,13 +27,12 @@
         </nav>
     </header>
 
-    <main>
-        <!-- Search Bar -->
-        <div id="search-bar" style="text-align: center; margin: 20px;">
-            <input type="text" id="search-input" placeholder="Search Skins..." />
-            <button onclick="searchSkins()">Search</button>
-        </div>
+    <!-- Search Bar (No Button Needed) -->
+    <div style="text-align: center; margin: 20px;">
+        <input type="text" id="searchInput" placeholder="Search Skins..." onkeyup="searchTable()">
+    </div>
 
+    <main>
         <!-- Skins Table Section -->
         <section>
             <table>
@@ -59,41 +58,27 @@
     <script src="https://kit.fontawesome.com/1d1c3ac163.js" crossorigin="anonymous"></script>
     <script src="./public/js/skins.js" type="module"></script>
 
+    <!-- Search Script -->
     <script>
-        // This function is triggered when you click the "Search" button
-        function searchSkins() {
-            const searchInput = document.getElementById('search-input').value.toLowerCase();
-            const skinsTable = document.getElementById('Skins');
-            const rows = skinsTable.getElementsByTagName('tr'); // Get all rows in the table body
+    function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let rows = document.querySelectorAll("tbody tr");
 
-            let found = false;
-
-            // Loop through all rows and check if the skin's name or description matches the search input
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                const nameCell = cells[1]; // Name column (index 1)
-                const descriptionCell = cells[2]; // Description column (index 2)
-
-                if (nameCell && descriptionCell) {
-                    const nameText = nameCell.textContent.toLowerCase();
-                    const descriptionText = descriptionCell.textContent.toLowerCase();
-
-                    // If the search input matches the name or description, show the row
-                    if (nameText.includes(searchInput) || descriptionText.includes(searchInput)) {
-                        rows[i].style.display = ''; // Show the row
-                        found = true;
-                    } else {
-                        rows[i].style.display = 'none'; // Hide the row
-                    }
+        for (let row of rows) {
+            let nameCell = row.querySelector("td:nth-child(2)"); // Assumes Name is in the second column
+            if (nameCell) {
+                let name = nameCell.textContent.toLowerCase();
+                if (name.includes(input)) {
+                    row.style.background = "yellow"; // Highlight the found row
+                    row.scrollIntoView({ behavior: "smooth", block: "center" });
+                    break; // Stop at the first match
+                } else {
+                    row.style.background = ""; // Reset background if not matched
                 }
             }
-
-            // Display a message if no results were found
-            if (!found) {
-                alert("No matching skins found.");
-            }
         }
+    }
     </script>
-</body>
 
+</body>
 </html>
