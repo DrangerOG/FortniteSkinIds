@@ -32,6 +32,12 @@
                 <li><a href="#" style="color: #ffffff">Banners</a></li>
             </ul>
         </div>
+        
+        <!-- Search Bar -->
+        <div>
+            <input type="text" id="searchInput" placeholder="Search Banners..." onkeyup="searchTable()">
+        </div>
+        
     </header>
 
     <main>
@@ -58,6 +64,28 @@
 
     <script src="https://kit.fontawesome.com/1d1c3ac163.js" crossorigin="anonymous"></script>
     <script src="../js/banners.js" type="module"></script>
-</body>
 
+    <!-- Search Script -->
+    <script>
+    function searchTable() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let rows = document.querySelectorAll("tbody tr");
+
+        for (let row of rows) {
+            let nameCell = row.querySelector("td:nth-child(2)"); // Assumes Name is in the second column
+            if (nameCell) {
+                let name = nameCell.textContent.toLowerCase();
+                if (name.includes(input)) {
+                    row.style.background = "yellow"; // Highlight the found row
+                    row.scrollIntoView({ behavior: "smooth", block: "center" });
+                    break; // Stop at the first match
+                } else {
+                    row.style.background = ""; // Reset background if not matched
+                }
+            }
+        }
+    }
+    </script>
+
+</body>
 </html>
