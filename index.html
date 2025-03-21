@@ -23,11 +23,18 @@
                 <li><a href="./public/html/wraps.html">Wraps</a></li>
                 <li><a href="./public/html/dances.html">Emotes</a></li>
                 <li><a href="./public/html/loadingscreens.html">Others</a></li>
-               </ul>
+            </ul>
         </nav>
     </header>
 
     <main>
+        <!-- Search Bar -->
+        <div id="search-bar" style="text-align: center; margin: 20px;">
+            <input type="text" id="search-input" placeholder="Search Skins..." />
+            <button onclick="searchSkins()">Search</button>
+        </div>
+
+        <!-- Skins Table Section -->
         <section>
             <table>
                 <thead>
@@ -39,7 +46,7 @@
                     </tr>
                 </thead>
                 <tbody id="Skins">
-
+                    <!-- Dynamic rows will be added by JavaScript -->
                 </tbody>
             </table>
         </section>
@@ -51,6 +58,42 @@
 
     <script src="https://kit.fontawesome.com/1d1c3ac163.js" crossorigin="anonymous"></script>
     <script src="./public/js/skins.js" type="module"></script>
+
+    <script>
+        // This function is triggered when you click the "Search" button
+        function searchSkins() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const skinsTable = document.getElementById('Skins');
+            const rows = skinsTable.getElementsByTagName('tr'); // Get all rows in the table body
+
+            let found = false;
+
+            // Loop through all rows and check if the skin's name or description matches the search input
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const nameCell = cells[1]; // Name column (index 1)
+                const descriptionCell = cells[2]; // Description column (index 2)
+
+                if (nameCell && descriptionCell) {
+                    const nameText = nameCell.textContent.toLowerCase();
+                    const descriptionText = descriptionCell.textContent.toLowerCase();
+
+                    // If the search input matches the name or description, show the row
+                    if (nameText.includes(searchInput) || descriptionText.includes(searchInput)) {
+                        rows[i].style.display = ''; // Show the row
+                        found = true;
+                    } else {
+                        rows[i].style.display = 'none'; // Hide the row
+                    }
+                }
+            }
+
+            // Display a message if no results were found
+            if (!found) {
+                alert("No matching skins found.");
+            }
+        }
+    </script>
 </body>
 
 </html>
