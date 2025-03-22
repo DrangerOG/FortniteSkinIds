@@ -25,6 +25,11 @@
                 <li><a href="./loadingscreens.html">Others</a></li>
             </ul>
         </nav>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for wraps...">
+        </div>
     </header>
 
     <main>
@@ -39,9 +44,10 @@
                     </tr>
                 </thead>
                 <tbody id="Wraps">
-                    
+                    <!-- Wraps data will be dynamically inserted here -->
                 </tbody>
             </table>
+            <div id="noResults" style="display: none;">No Results Found</div>
         </section>
     </main>
 
@@ -52,32 +58,54 @@
     <script src="https://kit.fontawesome.com/1d1c3ac163.js" crossorigin="anonymous"></script>
     <script src="../js/wraps.js" type="module"></script>
 
-      <!-- Fixed Search Script -->
     <script>
-    function searchTable() {
-        let input = document.getElementById("searchInput").value.toLowerCase();
-        let rows = document.querySelectorAll("#Wraps tr");
-        let found = false;
+        // Sample wraps data - Replace this with dynamic data
+        const wrapsData = [
+            { image: 'wrap1.jpg', name: 'Flame Wrap', description: 'A fiery wrap.', id: '001' },
+            { image: 'wrap2.jpg', name: 'Galaxy Wrap', description: 'A wrap from the stars.', id: '002' },
+            { image: 'wrap3.jpg', name: 'Camo Wrap', description: 'A camouflaged wrap.', id: '003' },
+            { image: 'wrap4.jpg', name: 'Rainbow Wrap', description: 'A wrap of all colors.', id: '004' },
+            // Add more items as needed
+        ];
 
-        rows.forEach(row => {
-            let nameCell = row.querySelector("td:nth-child(2)"); // Name column
-            if (nameCell) {
-                let name = nameCell.textContent.toLowerCase();
-                if (name.includes(input)) {
-                    row.style.display = ""; // Show row
-                    row.style.background = "yellow"; // Highlight match
-                    found = true;
-                } else {
-                    row.style.display = "none"; // Hide row
-                    row.style.background = ""; // Remove highlight
-                }
-            }
+        // Insert wraps into table
+        const wrapsTableBody = document.getElementById("Wraps");
+        wrapsData.forEach(wrap => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><img src="${wrap.image}" alt="${wrap.name}" style="width: 50px;"></td>
+                <td>${wrap.name}</td>
+                <td>${wrap.description}</td>
+                <td>${wrap.id}</td>
+            `;
+            wrapsTableBody.appendChild(row);
         });
 
-        // Show "No Results Found" message if no matches
-        document.getElementById("noResults").style.display = found ? "none" : "block";
-    }
-    </script>
+        // Fixed Search Function
+        function searchTable() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll("#Wraps tr");
+            let found = false;
 
+            rows.forEach(row => {
+                let nameCell = row.querySelector("td:nth-child(2)"); // Name column
+                if (nameCell) {
+                    let name = nameCell.textContent.toLowerCase();
+                    if (name.includes(input)) {
+                        row.style.display = ""; // Show row
+                        row.style.background = "yellow"; // Highlight match
+                        found = true;
+                    } else {
+                        row.style.display = "none"; // Hide row
+                        row.style.background = ""; // Remove highlight
+                    }
+                }
+            });
+
+            // Show "No Results Found" message if no matches
+            document.getElementById("noResults").style.display = found ? "none" : "block";
+        }
+    </script>
 </body>
+
 </html>
